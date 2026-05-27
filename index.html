@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>参数链接生成器</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        padding: 40px;
+        font-family: Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+        background: #f5f8fa;
+        color: #222;
+      }
+
+      .wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+      }
+
+      .card {
+        background: #fff;
+        border: 1px solid #e5e5e5;
+        border-radius: 16px;
+        padding: 28px 32px;
+        margin-bottom: 32px;
+        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.08);
+      }
+
+      h2 {
+        margin: 0 0 24px;
+        font-size: 20px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 16px;
+      }
+
+      .required::before {
+        content: "*";
+        color: #e33;
+        margin-right: 2px;
+      }
+
+      textarea,
+      select {
+        width: 100%;
+        border: 1px solid #dcdfe6;
+        border-radius: 4px;
+        padding: 12px;
+        font-size: 14px;
+        outline: none;
+        background: #fff;
+      }
+
+      textarea {
+        height: 100px;
+        resize: vertical;
+      }
+
+      .tip {
+        margin-top: 10px;
+        font-size: 13px;
+        color: #999;
+      }
+
+      .quick {
+        margin: 22px 0;
+        font-size: 13px;
+        color: #1594d2;
+      }
+
+      .quick span {
+        cursor: pointer;
+        margin-right: 8px;
+        font-weight: 600;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 22px 44px;
+      }
+
+      .actions {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin: 24px 0 48px;
+      }
+
+      button {
+        min-width: 120px;
+        height: 40px;
+        border-radius: 4px;
+        border: 1px solid #999;
+        background: #fff;
+        cursor: pointer;
+      }
+
+      .primary {
+        border-color: #1594d2;
+        background: #1594d2;
+        color: #fff;
+      }
+
+      .result-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .copy-all {
+        min-width: auto;
+        padding: 0 18px;
+        border-radius: 20px;
+        border: none;
+        background: #1594d2;
+        color: #fff;
+      }
+
+      .item {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 18px 0;
+        border-bottom: 1px solid #eee;
+        line-height: 1.7;
+        word-break: break-all;
+      }
+
+      .copy {
+        color: #1594d2;
+        cursor: pointer;
+        white-space: nowrap;
+      }
+
+      @media (max-width: 768px) {
+        body {
+          padding: 28px 18px;
+        }
+
+        .wrap {
+          max-width: 560px;
+        }
+
+        .card {
+          padding: 22px;
+        }
+
+        .grid {
+          grid-template-columns: 1fr;
+          gap: 18px;
+        }
+
+        .actions {
+          margin-bottom: 24px;
+        }
+
+        .item {
+          font-size: 15px;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <h2>生成配置</h2>
+
+        <label class="required">原始链接：</label>
+        <textarea
+          id="urls"
+          placeholder="完整的网站网址，访客将访问此网址。"
+        ></textarea>
+        <div class="tip">
+          支持批量粘贴，多个换行，自动去空行，最多支持100个同时生成
+        </div>
+
+        <div class="quick">
+          快捷渠道：
+          <span data-medium="social" data-source="xiaohongshu">小红书</span>
+          <span data-medium="social" data-source="facebook">facebook</span>
+        </div>
+
+        <div class="grid">
+          <div>
+            <label>Medium</label>
+            <select id="medium">
+              <option value="">请选择</option>
+              <option value="social">social</option>
+              <option value="cpc">cpc</option>
+              <option value="email">email</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Source</label>
+            <select id="source">
+              <option value="">请选择</option>
+              <option value="xiaohongshu">xiaohongshu</option>
+              <option value="facebook">facebook</option>
+              <option value="google">google</option>
+            </select>
+          </div>
+
+          <div></div>
+          <div></div>
+
+          <div>
+            <label>MKT-Channel:</label>
+            <select id="channel">
+              <option value="">请选择</option>
+              <option value="social">social</option>
+              <option value="sem">sem</option>
+              <option value="kol">kol</option>
+            </select>
+          </div>
+
+          <div>
+            <label>allianceid：</label>
+            <select id="allianceid">
+              <option value="">请选择</option>
+              <option value="6993358">6993358</option>
+              <option value="123456">123456</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Sid：</label>
+            <select id="sid">
+              <option value="">请选择</option>
+              <option value="255399586">255399586</option>
+              <option value="888888">888888</option>
+            </select>
+          </div>
+
+          <div>
+            <label>Ouid：</label>
+            <select id="ouid">
+              <option value="">请选择</option>
+              <option value="45">45</option>
+              <option value="99">99</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="clearBtn">清空</button>
+        <button class="primary" id="genBtn">生成带参链接</button>
+      </div>
+
+      <div class="card">
+        <div class="result-head">
+          <h2>生成结果</h2>
+          <button class="copy-all" id="copyAllBtn">复制全部链接</button>
+        </div>
+        <div id="result"></div>
+      </div>
+    </div>
+
+    <script>
+      const $ = (id) => document.getElementById(id);
+
+      function buildUrl(rawUrl) {
+        const params = {
+          medium: $("medium").value,
+          source: $("source").value,
+          mkt_channel: $("channel").value,
+          allianceid: $("allianceid").value,
+          sid: $("sid").value,
+          ouid: $("ouid").value,
+        };
+
+        const url = new URL(rawUrl.trim(), location.origin);
+
+        Object.entries(params).forEach(([key, val]) => {
+          if (val) url.searchParams.set(key, val);
+        });
+
+        return url.href;
+      }
+
+      function generate() {
+        const urls = $("urls")
+          .value.split(/\n+/)
+          .map((v) => v.trim())
+          .filter(Boolean)
+          .slice(0, 100);
+
+        const result = $("result");
+        result.innerHTML = "";
+
+        urls.forEach((raw) => {
+          try {
+            const finalUrl = buildUrl(raw);
+
+            const item = document.createElement("div");
+            item.className = "item";
+            item.innerHTML = `
+        <div>${finalUrl}</div>
+        <div class="copy">复制</div>
+      `;
+
+            item.querySelector(".copy").onclick = () => copyText(finalUrl);
+            result.appendChild(item);
+          } catch {
+            const item = document.createElement("div");
+            item.className = "item";
+            item.innerHTML = `<div style="color:#e33;">无效链接：${raw}</div>`;
+            result.appendChild(item);
+          }
+        });
+      }
+
+      function copyText(text) {
+        navigator.clipboard.writeText(text).then(() => {
+          alert("复制成功");
+        });
+      }
+
+      $("genBtn").onclick = generate;
+
+      $("clearBtn").onclick = () => {
+        $("urls").value = "";
+        $("result").innerHTML = "";
+        document.querySelectorAll("select").forEach((s) => (s.value = ""));
+      };
+
+      $("copyAllBtn").onclick = () => {
+        const links = [...document.querySelectorAll(".item > div:first-child")]
+          .map((el) => el.innerText)
+          .filter(Boolean)
+          .join("\n");
+
+        if (links) copyText(links);
+      };
+
+      document.querySelectorAll(".quick span").forEach((el) => {
+        el.onclick = () => {
+          $("medium").value = el.dataset.medium;
+          $("source").value = el.dataset.source;
+        };
+      });
+    </script>
+  </body>
+</html>
