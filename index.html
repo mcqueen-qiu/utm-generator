@@ -364,5 +364,50 @@
         };
       });
     </script>
+
+    <script>
+      function isFeishuEnv() {
+        return (
+          /feishu|lark/i.test(navigator.userAgent) ||
+          !!window.h5sdk ||
+          !!window.tt
+        );
+      }
+
+      function blockPage() {
+        document.body.innerHTML = `
+		<div style="
+		  min-height:100vh;
+		  display:flex;
+		  align-items:center;
+		  justify-content:center;
+		  padding:24px;
+		  background:#f5f8fa;
+		  font-family:Arial,'PingFang SC','Microsoft YaHei',sans-serif;
+		">
+		  <div style="
+			max-width:420px;
+			background:#fff;
+			border-radius:16px;
+			padding:32px;
+			text-align:center;
+			box-shadow:0 4px 20px rgba(0,0,0,.08);
+		  ">
+			<h2 style="margin:0 0 16px;">不可使用</h2>
+			<p style="margin:0;color:#666;line-height:1.7;">
+			  请在本公司飞书客户端内打开该工具。
+			</p>
+		  </div>
+		</div>
+	  `;
+      }
+
+      window.addEventListener("DOMContentLoaded", function () {
+        if (!isFeishuEnv()) {
+          blockPage();
+          return;
+        }
+      });
+    </script>
   </body>
 </html>
