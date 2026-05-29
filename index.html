@@ -273,6 +273,14 @@
     </div>
 
     <script>
+      window.onload = function () {
+        console.log("h5sdk:", window.h5sdk);
+        console.log("tt:", window.tt);
+        console.log("ua:", navigator.userAgent);
+      };
+    </script>
+
+    <script>
       const $ = (id) => document.getElementById(id);
 
       function buildUrl(rawUrl) {
